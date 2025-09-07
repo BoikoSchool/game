@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+  font-weight: 400;
+  color: #333;
+  background: linear-gradient(hsl(151, 61%, 21%), hsl(151, 80%, 28%));
+}
+
+/* LAYOUT */
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+.player {
+  flex: 1 1;
+  text-align: center;
+}
+
+.boxScore {
+  display: flex;
+  padding: 15px 10px;
+  background-image: linear-gradient(red, yellow);
+}
+.vs-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.name,
+.score {
+  align-items: center;
+  color: #fdfdfd;
+  display: flex;
+  flex: 1 1;
+  font-size: 24px;
+  font-weight: 700;
+  justify-content: center;
+  margin: auto;
+  max-width: 120px;
+}
+
+.score {
+  font-size: 92px;
+}
+
+.img {
+  height: 100px;
+  width: 100px;
+}
+.vs {
+  height: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#data-container {
+  display: flex;
+  color: #fff;
+  padding: 6px 40px;
+  flex-direction: column;
+  gap: 5px;
+  background: linear-gradient(hsl(151, 61%, 21%), hsl(151, 80%, 28%));
+}
+
+.content {
+  padding: 5px 0;
+}
+
+.content__item {
+  display: flex;
+  padding: 0 30px;
+  font-size: 18px;
+}
+.content__score {
+  font-weight: 600;
+  font-size: 20px;
+}
+.content__label {
+  flex: 1 1;
+  text-align: center;
+}
+.Ag {
+  padding: 0 10px;
+  display: flex;
+}
+.Bg {
+  background-color: #222;
+  display: flex;
+  flex: 1 1;
+  height: 9px;
+  overflow: hidden;
+  position: relative;
+  border-bottom-left-radius: 7.5px;
+  border-top-left-radius: 7.5px;
+  justify-content: flex-end;
+  margin-right: 4px;
+}
+
+.Cg {
+  background-color: #222;
+  display: flex;
+  flex: 1 1;
+  height: 9px;
+  overflow: hidden;
+  position: relative;
+  border-bottom-right-radius: 7.5px;
+  border-top-right-radius: 7.5px;
+  margin-left: 4px;
+}
+.Fg {
+  background-color: #ff6b00;
+}
+
+@media (max-width: 710px) {
+  .img {
+    height: 60px;
+    width: 60px;
+  }
+  .vs {
+    height: 40px;
+  }
+  .content__item {
+    font-size: 12px;
+  }
+  .table {
+    padding: 10px;
+  }
+}
