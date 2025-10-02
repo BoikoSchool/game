@@ -1,5 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
-
+:root {
+  --red: #d61010;
+  --yellow: #ffe000;
+  --soft-yellow: #ffe868;
+  --soft-rose: #f1c9c9;
+  --text: #1e1e1e;
+  --white: #ffffff;
+}
 * {
   margin: 0;
   padding: 0;
@@ -139,4 +146,98 @@ main {
   .table {
     padding: 10px;
   }
+}
+.wrapper-leaders {
+  margin: 0;
+  margin-top: -20px;
+  font-family: Montserrat, sans-serif;
+  background: linear-gradient(to right, var(--red) 50%, var(--yellow) 50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24px;
+}
+
+.crests {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  padding: 30px 0 10px;
+}
+.crest-img {
+  width: 140px;
+  height: auto;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.25));
+}
+
+/* Центральний блок */
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.board {
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 1000px;
+  width: 100%;
+}
+.board__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Заголовки секцій */
+.side__title {
+  font-weight: 800;
+  font-size: 48px;
+  padding: 12px;
+}
+.side--gryff .side__title {
+  background: var(--yellow);
+}
+.side--dragons .side__title {
+  background: var(--soft-rose);
+}
+
+/* Таблиці */
+.rank {
+  width: 100%;
+  border-collapse: collapse;
+}
+.rank th,
+.rank td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+.side--gryff tbody tr:nth-child(odd) {
+  background: #fff8b5;
+}
+.side--gryff tbody tr:nth-child(even) {
+  background: #ffef7a;
+}
+.side--dragons tbody tr:nth-child(odd) {
+  background: #f7dede;
+}
+.side--dragons tbody tr:nth-child(even) {
+  background: #f3d1d1;
+}
+
+/* Низ */
+.footer-banner {
+  text-align: center;
+  padding: 20px;
+}
+.footer-banner h1 {
+  margin: 0;
+  font-size: 96px;
+  font-weight: 900;
+  color: var(--red);
+  letter-spacing: 6px;
+  padding-left: 72px;
+}
+.footer-yellow {
+  color: var(--yellow);
 }
