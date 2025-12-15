@@ -181,7 +181,7 @@ main {
   background: var(--white);
   border-radius: 12px;
   overflow: hidden;
-  max-width: 1000px;
+  /* max-width: 1000px; */
   width: 100%;
 }
 .board__grid {
