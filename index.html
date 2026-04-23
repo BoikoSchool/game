@@ -1,137 +1,356 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Game Boiko School</title>
-    <link href="style.css" rel="stylesheet" />
-  </head>
-  <body>
-    <main>
-      <div class="boxScore">
-        <div class="player">
-          <div class="box">
-            <span class="name" id="name--1">Griffin</span>
-            <img src="img/griffin.png" alt="grifin" class="img" />
-          </div>
-        </div>
-        <div class="vs-box">
-          <div class="score" id="griffin-score">0</div>
-          <img class="vs" src="img/vs.png" alt="" />
-          <div class="score" id="dragon-score">0</div>
-        </div>
-        <div class="player">
-          <div class="box">
-            <span class="name" id="name--2">Dragon</span>
-            <img src="img/dragon.png" alt="dragon" class="img" />
-          </div>
-        </div>
-      </div>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>До канікул — Весняне табло</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      <div id="data-container"></div>
-      <section id="leaders" class="leaders" hidden>
-        <div class="wrapper-leaders">
-          <div class="split-bg">
-            <!-- Блок з гербами зверху -->
+  :root {
+    --text-dark: #3d1635;
+    --text-mid: #6b3d5e;
+    --text-accent: #7a2348;
+  }
 
-            <!-- Центральний блок з таблицями -->
-            <main class="container">
-              <div class="board">
-                <div class="board__grid">
-                  <!-- Грифони -->
-                  <section class="side side--gryff">
-                    <header class="side__title">Грифони</header>
-                    <table class="rank">
-                      <thead>
-                        <tr>
-                          <th>Балів</th>
-                          <th>Учень/учениця</th>
-                          <th>Клас</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>100</td>
-                          <td>Кецман Таїсія</td>
-                          <td>7</td>
-                        </tr>
-                        <tr>
-                          <td>95</td>
-                          <td>Стусь Тарас</td>
-                          <td>6</td>
-                        </tr>
-                        <tr>
-                          <td>95</td>
-                          <td>Черфус Поліна</td>
-                          <td>7</td>
-                        </tr>
-                        <tr>
-                          <td>90</td>
-                          <td>Афанасова Софія</td>
-                          <td>6</td>
-                        </tr>
-                        <tr>
-                          <td>85</td>
-                          <td>Євель Мілана</td>
-                          <td>5</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </section>
+  html, body { height: 100%; overflow: hidden; }
 
-                  <!-- Дракони -->
-                  <section class="side side--dragons">
-                    <header class="side__title">Дракони</header>
-                    <table class="rank">
-                      <thead>
-                        <tr>
-                          <th>Балів</th>
-                          <th>Учень/учениця</th>
-                          <th>Клас</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>185</td>
-                          <td>Кібець Мілана</td>
-                          <td>3</td>
-                        </tr>
-                        <tr>
-                          <td>125</td>
-                          <td>Біскаль Луїза</td>
-                          <td>6</td>
-                        </tr>
-                        <tr>
-                          <td>115</td>
-                          <td>Правдюк Акім</td>
-                          <td>3</td>
-                        </tr>
-                        <tr>
-                          <td>105</td>
-                          <td>Толмачова Маша</td>
-                          <td>10</td>
-                        </tr>
-                        <tr>
-                          <td>105</td>
-                          <td>Гудкова Надя</td>
-                          <td>5</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </section>
-                </div>
-              </div>
-            </main>
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: linear-gradient(135deg, #ffd6e7 0%, #f9c2e0 20%, #e8b8f0 38%, #d8b4fe 55%, #bfd8ff 75%, #c5f0dc 100%);
+    background-size: 200% 200%;
+    animation: bgShift 20s ease-in-out infinite;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: relative;
+  }
 
-            <!-- Низ сторінки -->
-            <footer class="footer-banner">
-              <h1><span class="footer-yellow">ЛІДЕРИ</span>1 СЕМЕСТРУ</h1>
-            </footer>
-          </div>
-        </div>
-      </section>
-    </main>
+  @keyframes bgShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
 
-    <script src="script.js"></script>
-  </body>
+  /* ---------- Background decorations ---------- */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .sun {
+    position: absolute;
+    top: 4vh;
+    right: 6vw;
+    width: clamp(120px, 16vw, 240px);
+    height: clamp(120px, 16vw, 240px);
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff8c8 0%, #ffd86b 50%, rgba(255, 216, 107, 0) 100%);
+    filter: blur(2px);
+    animation: sunPulse 6s ease-in-out infinite;
+  }
+
+  @keyframes sunPulse {
+    0%, 100% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+
+  .cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 100px;
+    filter: blur(8px);
+    animation: drift linear infinite;
+  }
+
+  @keyframes drift {
+    0% { transform: translateX(-20vw); }
+    100% { transform: translateX(120vw); }
+  }
+
+  .petal {
+    position: absolute;
+    top: -40px;
+    animation: fall linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-5vh) translateX(0) rotate(0deg); opacity: 0; }
+    8% { opacity: 0.9; }
+    92% { opacity: 0.9; }
+    100% { transform: translateY(110vh) translateX(12vw) rotate(720deg); opacity: 0; }
+  }
+
+  .butterfly {
+    position: absolute;
+    animation: fly linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes fly {
+    0%   { transform: translate(-5vw, 0) rotate(-4deg); }
+    25%  { transform: translate(25vw, -8vh) rotate(6deg); }
+    50%  { transform: translate(50vw, 3vh) rotate(-4deg); }
+    75%  { transform: translate(75vw, -6vh) rotate(6deg); }
+    100% { transform: translate(110vw, 0) rotate(-4deg); }
+  }
+
+  .wing {
+    transform-origin: center;
+    animation: flap 0.32s ease-in-out infinite;
+  }
+
+  @keyframes flap {
+    0%, 100% { transform: scaleX(1); }
+    50% { transform: scaleX(0.25); }
+  }
+
+  /* ---------- Main card ---------- */
+  .glass {
+    position: relative;
+    z-index: 10;
+    width: min(92vw, 1400px);
+    padding: clamp(2rem, 5vh, 5rem) clamp(1.5rem, 4vw, 4rem);
+    background: rgba(255, 255, 255, 0.32);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: clamp(24px, 3vw, 48px);
+    box-shadow:
+      0 30px 100px rgba(160, 80, 140, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    text-align: center;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(0.75rem, 1.1vw, 1.1rem);
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-accent);
+    background: rgba(255, 255, 255, 0.6);
+    padding: 0.6em 1.4em;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    margin-bottom: clamp(1rem, 2vh, 2rem);
+  }
+
+  .title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: clamp(2.5rem, 7vw, 7rem);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--text-dark);
+    margin-bottom: clamp(0.3rem, 0.8vh, 0.8rem);
+    letter-spacing: -0.02em;
+  }
+
+  .title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-accent);
+  }
+
+  .subline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.6vw, 1.6rem);
+    color: var(--text-mid);
+    margin-bottom: clamp(1.5rem, 4vh, 4rem);
+    font-weight: 400;
+  }
+
+  /* ---------- Countdown ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(0.6rem, 1.2vw, 1.6rem);
+  }
+
+  .cell {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: clamp(16px, 2vw, 28px);
+    padding: clamp(1rem, 3vh, 3rem) clamp(0.5rem, 1vw, 1.5rem);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.4s ease;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .num {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144;
+    font-size: clamp(3rem, 10vw, 11rem);
+    font-weight: 500;
+    line-height: 0.95;
+    color: var(--text-dark);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    margin-bottom: clamp(0.3rem, 0.8vh, 0.8rem);
+  }
+
+  .lbl {
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(0.7rem, 1vw, 1.1rem);
+    color: var(--text-mid);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .pulse {
+    animation: pulse 0.6s ease;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  /* ---------- Celebration when time is up ---------- */
+  .done .title {
+    color: var(--text-accent);
+  }
+
+  /* ---------- Responsive tweaks ---------- */
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-layer">
+  <div class="sun"></div>
+
+  <div class="cloud" style="top: 10vh; width: 200px; height: 40px; animation-duration: 60s; animation-delay: 0s;"></div>
+  <div class="cloud" style="top: 22vh; width: 140px; height: 32px; animation-duration: 80s; animation-delay: -20s;"></div>
+  <div class="cloud" style="top: 78vh; width: 170px; height: 36px; animation-duration: 90s; animation-delay: -40s;"></div>
+
+  <!-- Petals - 20 for rich atmosphere on large screens -->
+  <div class="petal" style="left: 3%;  animation-duration: 11s; animation-delay: 0s;"><svg width="18" height="18" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ff9ac7" opacity=".85"/></svg></div>
+  <div class="petal" style="left: 8%;  animation-duration: 14s; animation-delay: 2s;"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#d8b4fe" opacity=".8"/></svg></div>
+  <div class="petal" style="left: 13%; animation-duration: 12s; animation-delay: 4s;"><svg width="20" height="20" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ffc8dd" opacity=".9"/></svg></div>
+  <div class="petal" style="left: 18%; animation-duration: 13s; animation-delay: 1s;"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ffffff" opacity=".7"/></svg></div>
+  <div class="petal" style="left: 24%; animation-duration: 15s; animation-delay: 3s;"><svg width="16" height="16" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ff9ac7" opacity=".85"/></svg></div>
+  <div class="petal" style="left: 30%; animation-duration: 11.5s; animation-delay: 5s;"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#c4b5fd" opacity=".85"/></svg></div>
+  <div class="petal" style="left: 36%; animation-duration: 13.5s; animation-delay: 0.5s;"><svg width="18" height="18" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ffc8dd" opacity=".9"/></svg></div>
+  <div class="petal" style="left: 42%; animation-duration: 12.5s; animation-delay: 2.5s;"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ffffff" opacity=".7"/></svg></div>
+  <div class="petal" style="left: 48%; animation-duration: 14.5s; animation-delay: 4.5s;"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ff9ac7" opacity=".85"/></svg></div>
+  <div class="petal" style="left: 54%; animation-duration: 11s; animation-delay: 1.5s;"><svg width="16" height="16" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#d8b4fe" opacity=".8"/></svg></div>
+  <div class="petal" style="left: 60%; animation-duration: 13s; animation-delay: 3.5s;"><svg width="18" height="18" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ff9ac7" opacity=".85"/></svg></div>
+  <div class="petal" style="left: 66%; animation-duration: 15s; animation-delay: 0s;"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#c4b5fd" opacity=".85"/></svg></div>
+  <div class="petal" style="left: 72%; animation-duration: 12s; animation-delay: 5s;"><svg width="20" height="20" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ffc8dd" opacity=".9"/></svg></div>
+  <div class="petal" style="left: 78%; animation-duration: 13.5s; animation-delay: 2s;"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ffffff" opacity=".7"/></svg></div>
+  <div class="petal" style="left: 84%; animation-duration: 11.5s; animation-delay: 4s;"><svg width="16" height="16" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ff9ac7" opacity=".85"/></svg></div>
+  <div class="petal" style="left: 90%; animation-duration: 14s; animation-delay: 1s;"><svg width="18" height="18" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#d8b4fe" opacity=".8"/></svg></div>
+  <div class="petal" style="left: 96%; animation-duration: 12.5s; animation-delay: 3s;"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z" fill="#ffc8dd" opacity=".9"/></svg></div>
+
+  <!-- Butterflies - varied colors, different flight paths -->
+  <div class="butterfly" style="top: 8%; animation-duration: 26s; animation-delay: 0s;">
+    <svg width="56" height="40" viewBox="0 0 44 32"><g class="wing"><ellipse cx="13" cy="12" rx="11" ry="9" fill="#ff8fb8" opacity=".9"/><ellipse cx="13" cy="22" rx="8" ry="7" fill="#ff6ba0" opacity=".9"/><ellipse cx="31" cy="12" rx="11" ry="9" fill="#ff8fb8" opacity=".9"/><ellipse cx="31" cy="22" rx="8" ry="7" fill="#ff6ba0" opacity=".9"/><circle cx="9" cy="10" r="1.6" fill="#fff" opacity=".9"/><circle cx="35" cy="10" r="1.6" fill="#fff" opacity=".9"/></g><ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635"/></svg>
+  </div>
+  <div class="butterfly" style="top: 28%; animation-duration: 34s; animation-delay: 10s;">
+    <svg width="46" height="34" viewBox="0 0 44 32"><g class="wing"><ellipse cx="13" cy="12" rx="11" ry="9" fill="#c4b5fd" opacity=".9"/><ellipse cx="13" cy="22" rx="8" ry="7" fill="#a78bfa" opacity=".9"/><ellipse cx="31" cy="12" rx="11" ry="9" fill="#c4b5fd" opacity=".9"/><ellipse cx="31" cy="22" rx="8" ry="7" fill="#a78bfa" opacity=".9"/></g><ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635"/></svg>
+  </div>
+  <div class="butterfly" style="top: 55%; animation-duration: 30s; animation-delay: 20s;">
+    <svg width="50" height="38" viewBox="0 0 44 32"><g class="wing"><ellipse cx="13" cy="12" rx="11" ry="9" fill="#86e3b8" opacity=".9"/><ellipse cx="13" cy="22" rx="8" ry="7" fill="#4ade80" opacity=".9"/><ellipse cx="31" cy="12" rx="11" ry="9" fill="#86e3b8" opacity=".9"/><ellipse cx="31" cy="22" rx="8" ry="7" fill="#4ade80" opacity=".9"/><circle cx="9" cy="10" r="1.4" fill="#fff" opacity=".9"/><circle cx="35" cy="10" r="1.4" fill="#fff" opacity=".9"/></g><ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635"/></svg>
+  </div>
+  <div class="butterfly" style="top: 78%; animation-duration: 32s; animation-delay: 5s;">
+    <svg width="52" height="40" viewBox="0 0 44 32"><g class="wing"><ellipse cx="13" cy="12" rx="11" ry="9" fill="#fbbf24" opacity=".9"/><ellipse cx="13" cy="22" rx="8" ry="7" fill="#f59e0b" opacity=".9"/><ellipse cx="31" cy="12" rx="11" ry="9" fill="#fbbf24" opacity=".9"/><ellipse cx="31" cy="22" rx="8" ry="7" fill="#f59e0b" opacity=".9"/><circle cx="9" cy="10" r="1.4" fill="#fff" opacity=".9"/><circle cx="35" cy="10" r="1.4" fill="#fff" opacity=".9"/></g><ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635"/></svg>
+  </div>
+  <div class="butterfly" style="top: 42%; animation-duration: 28s; animation-delay: 16s;">
+    <svg width="44" height="32" viewBox="0 0 44 32"><g class="wing"><ellipse cx="13" cy="12" rx="11" ry="9" fill="#93c5fd" opacity=".9"/><ellipse cx="13" cy="22" rx="8" ry="7" fill="#60a5fa" opacity=".9"/><ellipse cx="31" cy="12" rx="11" ry="9" fill="#93c5fd" opacity=".9"/><ellipse cx="31" cy="22" rx="8" ry="7" fill="#60a5fa" opacity=".9"/></g><ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635"/></svg>
+  </div>
+</div>
+
+<main class="glass" id="board">
+  <span class="tag">✿ Весна 2026 ✿</span>
+  <h1 class="title">До <em>канікул</em></h1>
+  <p class="subline" id="subline">Залишилося зовсім трохи…</p>
+
+  <div class="grid">
+    <div class="cell"><div class="num" id="days">00</div><div class="lbl">Днів</div></div>
+    <div class="cell"><div class="num" id="hours">00</div><div class="lbl">Годин</div></div>
+    <div class="cell"><div class="num" id="minutes">00</div><div class="lbl">Хвилин</div></div>
+    <div class="cell"><div class="num" id="seconds">00</div><div class="lbl">Секунд</div></div>
+  </div>
+</main>
+
+<script>
+  // ==========================================================
+  //  НАЛАШТУВАННЯ: змініть дату і час тут, якщо потрібно
+  // ==========================================================
+  const TARGET = new Date('2026-04-24T15:25:00').getTime();
+
+  const $ = id => document.getElementById(id);
+
+  function setNum(id, val) {
+    const el = $(id);
+    const s = String(val).padStart(2, '0');
+    if (el.textContent !== s) {
+      el.textContent = s;
+      const cell = el.parentElement;
+      cell.classList.remove('pulse');
+      void cell.offsetWidth;
+      cell.classList.add('pulse');
+    }
+  }
+
+  function tick() {
+    const now = Date.now();
+    let diff = TARGET - now;
+    if (diff < 0) diff = 0;
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor(diff / 3600000) % 24;
+    const m = Math.floor(diff / 60000) % 60;
+    const s = Math.floor(diff / 1000) % 60;
+
+    setNum('days', d);
+    setNum('hours', h);
+    setNum('minutes', m);
+    setNum('seconds', s);
+
+    const sub = $('subline');
+    if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
+      sub.textContent = '🎉 Канікули почалися! Гарного відпочинку!';
+      document.getElementById('board').classList.add('done');
+    } else if (d < 1 && h < 1) {
+      sub.textContent = 'Залишилися лічені хвилини! 🌷';
+    } else if (d < 1) {
+      sub.textContent = 'Залишилися лічені години! 🌸';
+    } else if (d < 7) {
+      sub.textContent = 'Фінальний тиждень — тримаймося разом 🌺';
+    }
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  // Fullscreen on click (for classroom displays)
+  document.body.addEventListener('dblclick', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen();
+    }
+  });
+</script>
+</body>
 </html>
