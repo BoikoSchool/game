@@ -24,7 +24,6 @@
         --text-mid: #6b3d5e;
         --text-accent: #7a2348;
 
-        /* Ці значення JS перезапише у px одразу після завантаження */
         --card-w: 1200px;
         --card-pad: 60px 80px;
         --card-radius: 40px;
@@ -41,6 +40,10 @@
         --mb-tag: 24px;
         --mb-sub: 60px;
         --mb-num: 12px;
+
+        /* Фінальна сцена */
+        --final-title: 200px;
+        --final-sub: 48px;
       }
 
       html,
@@ -68,9 +71,35 @@
         justify-content: center;
         min-height: 100vh;
         position: relative;
+        transition: background 2s ease;
+      }
+
+      /* Літнє тло — активується при завершенні */
+      body.celebrate {
+        background: linear-gradient(
+          135deg,
+          #fff4b8 0%,
+          #ffd86b 25%,
+          #ffb347 45%,
+          #ff9ac7 65%,
+          #a5d8ff 85%,
+          #86e3b8 100%
+        );
+        background-size: 200% 200%;
+        animation: bgShiftSummer 15s ease-in-out infinite;
       }
 
       @keyframes bgShift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes bgShiftSummer {
         0%,
         100% {
           background-position: 0% 50%;
@@ -103,6 +132,25 @@
         );
         filter: blur(2px);
         animation: sunPulse 6s ease-in-out infinite;
+        transition: all 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      /* Коли свято — сонце переміщується в центр і стає величезним */
+      body.celebrate .sun {
+        top: 50%;
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -50%);
+        width: 900px;
+        height: 900px;
+        background: radial-gradient(
+          circle,
+          #fffae0 0%,
+          #ffe082 30%,
+          #ffb347 60%,
+          rgba(255, 179, 71, 0) 100%
+        );
+        animation: sunPulseBig 4s ease-in-out infinite;
       }
 
       @keyframes sunPulse {
@@ -117,6 +165,18 @@
         }
       }
 
+      @keyframes sunPulseBig {
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.85;
+        }
+        50% {
+          transform: translate(-50%, -50%) scale(1.1);
+          opacity: 1;
+        }
+      }
+
       .cloud {
         position: absolute;
         background: rgba(255, 255, 255, 0.55);
@@ -125,7 +185,6 @@
         animation: drift linear infinite;
       }
 
-      /* Анімації використовують великі фіксовані px, щоб працювати на будь-якому екрані */
       @keyframes drift {
         0% {
           transform: translateX(-400px);
@@ -163,6 +222,7 @@
         position: absolute;
         animation: fly linear infinite;
         will-change: transform;
+        transition: transform 0.6s ease;
       }
 
       @keyframes fly {
@@ -183,6 +243,11 @@
         }
       }
 
+      /* У режимі святкування метелики літають швидше */
+      body.celebrate .butterfly {
+        animation-duration: 14s !important;
+      }
+
       .wing {
         transform-origin: center;
         animation: flap 0.32s ease-in-out infinite;
@@ -198,6 +263,7 @@
         }
       }
 
+      /* ---------- Картка відліку ---------- */
       .glass {
         position: relative;
         z-index: 10;
@@ -212,6 +278,15 @@
           0 30px 100px rgba(160, 80, 140, 0.18),
           inset 0 1px 0 rgba(255, 255, 255, 0.85);
         text-align: center;
+        transition:
+          opacity 1.2s ease,
+          transform 1.2s ease;
+      }
+
+      .glass.hide {
+        opacity: 0;
+        transform: scale(0.85);
+        pointer-events: none;
       }
 
       .tag {
@@ -311,8 +386,97 @@
         }
       }
 
-      .done .title {
-        color: var(--text-accent);
+      /* ---------- Фінальна сцена ---------- */
+      .finale {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1.5s ease 0.8s;
+      }
+
+      .finale.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .finale-title {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-variation-settings: "opsz" 144;
+        font-size: var(--final-title);
+        font-weight: 500;
+        line-height: 0.95;
+        color: #3d1635;
+        letter-spacing: -0.02em;
+        text-shadow:
+          0 4px 30px rgba(255, 255, 255, 0.8),
+          0 0 60px rgba(255, 220, 120, 0.5);
+        animation: titleBounce 3s ease-in-out infinite;
+        transform: scale(0);
+        transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 1s;
+      }
+
+      .finale.show .finale-title {
+        transform: scale(1);
+      }
+
+      .finale-title em {
+        font-style: italic;
+        font-weight: 400;
+        color: #c2185b;
+        background: linear-gradient(135deg, #ff6ba0, #ffb347, #c2185b);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      @keyframes titleBounce {
+        0%,
+        100% {
+          transform: scale(1) translateY(0);
+        }
+        50% {
+          transform: scale(1.03) translateY(-10px);
+        }
+      }
+
+      .finale-sub {
+        font-family: "Fraunces", "Times New Roman", serif;
+        font-style: italic;
+        font-size: var(--final-sub);
+        color: #5a2f4e;
+        margin-top: 24px;
+        text-shadow: 0 2px 20px rgba(255, 255, 255, 0.9);
+        opacity: 0;
+        transition: opacity 1s ease 2s;
+      }
+
+      .finale.show .finale-sub {
+        opacity: 1;
+      }
+
+      /* ---------- Фейєрверк ---------- */
+      .firework {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 40;
+      }
+
+      /* Канвас для динамічних частинок */
+      #fx {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        pointer-events: none;
       }
     </style>
   </head>
@@ -774,6 +938,8 @@
       </div>
     </div>
 
+    <canvas id="fx"></canvas>
+
     <main class="glass" id="board">
       <span class="tag">✿ Весна 2026 ✿</span>
       <h1 class="title">До <em>канікул</em></h1>
@@ -799,6 +965,11 @@
       </div>
     </main>
 
+    <div class="finale" id="finale">
+      <h1 class="finale-title">ЩАСЛИВИХ <em>КАНІКУЛ!</em></h1>
+      <p class="finale-sub">🌸 Відпочивай яскраво 🌸</p>
+    </div>
+
     <script>
       // ==========================================================
       //  НАЛАШТУВАННЯ: змініть дату і час тут
@@ -806,15 +977,13 @@
       var TARGET = new Date("2026-04-24T15:25:00").getTime();
 
       // ==========================================================
-      //  Обчислення всіх розмірів у ПІКСЕЛЯХ на основі розміру вікна
-      //  Виконується під час завантаження та при зміні розміру вікна
+      //  Обчислення розмірів у пікселях на основі вікна
       // ==========================================================
       function applyPixelSizes() {
         var w = window.innerWidth;
         var h = window.innerHeight;
         var r = document.documentElement.style;
 
-        // Якщо монітор надто маленький — використовуємо мобільну розкладку
         var isMobile = w < 900;
 
         if (isMobile) {
@@ -840,8 +1009,9 @@
           r.setProperty("--mb-tag", Math.round(h * 0.015) + "px");
           r.setProperty("--mb-sub", Math.round(h * 0.03) + "px");
           r.setProperty("--mb-num", "6px");
+          r.setProperty("--final-title", Math.round(w * 0.12) + "px");
+          r.setProperty("--final-sub", Math.round(w * 0.05) + "px");
         } else {
-          // Великі монітори: всі розміри — 100% у пікселях, обчислені з поточного розміру
           r.setProperty("--card-w", Math.round(w * 0.92) + "px");
           r.setProperty(
             "--card-pad",
@@ -867,11 +1037,16 @@
           r.setProperty("--mb-tag", Math.round(h * 0.02) + "px");
           r.setProperty("--mb-sub", Math.round(h * 0.05) + "px");
           r.setProperty("--mb-num", Math.round(h * 0.01) + "px");
+          r.setProperty("--final-title", Math.round(w * 0.11) + "px");
+          r.setProperty("--final-sub", Math.round(w * 0.025) + "px");
         }
       }
 
       applyPixelSizes();
-      window.addEventListener("resize", applyPixelSizes);
+      window.addEventListener("resize", function () {
+        applyPixelSizes();
+        resizeCanvas();
+      });
 
       // ==========================================================
       //  Відлік часу
@@ -895,6 +1070,8 @@
         }
       }
 
+      var celebrationStarted = false;
+
       function tick() {
         var now = Date.now();
         var diff = TARGET - now;
@@ -912,8 +1089,10 @@
 
         var sub = byId("subline");
         if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
-          sub.textContent = "🎉 Канікули почалися! Гарного відпочинку!";
-          byId("board").classList.add("done");
+          if (!celebrationStarted) {
+            celebrationStarted = true;
+            startCelebration();
+          }
         } else if (d < 1 && h < 1) {
           sub.textContent = "Залишилися лічені хвилини! 🌷";
         } else if (d < 1) {
@@ -926,6 +1105,125 @@
       tick();
       setInterval(tick, 1000);
 
+      // ==========================================================
+      //  ФІНАЛЬНА СЦЕНА + ФЕЙЄРВЕРК
+      // ==========================================================
+      function startCelebration() {
+        // Прибираємо картку відліку
+        byId("board").classList.add("hide");
+        // Міняємо тло на літнє
+        document.body.classList.add("celebrate");
+        // Показуємо напис
+        setTimeout(function () {
+          byId("finale").classList.add("show");
+        }, 400);
+        // Запускаємо фейєрверк
+        startFireworks();
+      }
+
+      // ---------- Канвас для фейєрверків ----------
+      var canvas = byId("fx");
+      var ctx = canvas.getContext("2d");
+      var particles = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+
+      function randRange(a, b) {
+        return a + Math.random() * (b - a);
+      }
+
+      var COLORS = [
+        "#ff6ba0",
+        "#ffb347",
+        "#fbbf24",
+        "#f472b6",
+        "#c084fc",
+        "#60a5fa",
+        "#4ade80",
+        "#fb7185",
+        "#fde68a",
+        "#fca5a5",
+        "#a78bfa",
+        "#fff",
+      ];
+
+      function launchFirework() {
+        var cx = randRange(canvas.width * 0.15, canvas.width * 0.85);
+        var cy = randRange(canvas.height * 0.15, canvas.height * 0.55);
+        var count = 40 + Math.floor(Math.random() * 30);
+        var baseColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+
+        for (var i = 0; i < count; i++) {
+          var angle = (Math.PI * 2 * i) / count + Math.random() * 0.3;
+          var speed = randRange(3, 8);
+          particles.push({
+            x: cx,
+            y: cy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 1,
+            decay: randRange(0.008, 0.016),
+            color:
+              Math.random() < 0.3
+                ? COLORS[Math.floor(Math.random() * COLORS.length)]
+                : baseColor,
+            size: randRange(2, 5),
+          });
+        }
+      }
+
+      function animateFireworks() {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (var i = particles.length - 1; i >= 0; i--) {
+          var p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.08; // гравітація
+          p.vx *= 0.99;
+          p.vy *= 0.99;
+          p.life -= p.decay;
+
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          ctx.globalAlpha = p.life;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          // світіння
+          ctx.globalAlpha = p.life * 0.3;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        requestAnimationFrame(animateFireworks);
+      }
+
+      function startFireworks() {
+        animateFireworks();
+        // Перший залп — одразу 3 вибухи
+        launchFirework();
+        setTimeout(launchFirework, 200);
+        setTimeout(launchFirework, 500);
+        // Потім регулярно
+        setInterval(function () {
+          launchFirework();
+          if (Math.random() < 0.4) setTimeout(launchFirework, 250);
+        }, 800);
+      }
+
       // Подвійний клік — повноекранний режим
       document.body.addEventListener("dblclick", function () {
         if (!document.fullscreenElement) {
@@ -934,6 +1232,16 @@
           }
         } else {
           if (document.exitFullscreen) document.exitFullscreen();
+        }
+      });
+
+      // ДЛЯ ТЕСТУВАННЯ: натисніть клавішу "T", щоб побачити фінальну сцену одразу
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "t" || e.key === "T" || e.key === "е" || e.key === "Е") {
+          if (!celebrationStarted) {
+            celebrationStarted = true;
+            startCelebration();
+          }
         }
       });
     </script>
