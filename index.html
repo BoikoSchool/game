@@ -1,1249 +1,137 @@
 <!doctype html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>До канікул — Весняне табло</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      :root {
-        --text-dark: #3d1635;
-        --text-mid: #6b3d5e;
-        --text-accent: #7a2348;
-
-        --card-w: 1200px;
-        --card-pad: 60px 80px;
-        --card-radius: 40px;
-        --title-size: 100px;
-        --subline-size: 28px;
-        --tag-size: 18px;
-        --num-size: 180px;
-        --lbl-size: 20px;
-        --grid-gap: 24px;
-        --cell-pad: 32px 12px;
-        --cell-radius: 28px;
-        --sun-size: 300px;
-        --mb-title: 16px;
-        --mb-tag: 24px;
-        --mb-sub: 60px;
-        --mb-num: 12px;
-
-        /* Фінальна сцена */
-        --final-title: 200px;
-        --final-sub: 48px;
-      }
-
-      html,
-      body {
-        height: 100%;
-        overflow: hidden;
-      }
-
-      body {
-        font-family: "Manrope", system-ui, sans-serif;
-        background: linear-gradient(
-          135deg,
-          #ffd6e7 0%,
-          #f9c2e0 20%,
-          #e8b8f0 38%,
-          #d8b4fe 55%,
-          #bfd8ff 75%,
-          #c5f0dc 100%
-        );
-        background-size: 200% 200%;
-        animation: bgShift 20s ease-in-out infinite;
-        color: var(--text-dark);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        position: relative;
-        transition: background 2s ease;
-      }
-
-      /* Літнє тло — активується при завершенні */
-      body.celebrate {
-        background: linear-gradient(
-          135deg,
-          #fff4b8 0%,
-          #ffd86b 25%,
-          #ffb347 45%,
-          #ff9ac7 65%,
-          #a5d8ff 85%,
-          #86e3b8 100%
-        );
-        background-size: 200% 200%;
-        animation: bgShiftSummer 15s ease-in-out infinite;
-      }
-
-      @keyframes bgShift {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-      }
-
-      @keyframes bgShiftSummer {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-      }
-
-      .bg-layer {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        overflow: hidden;
-        z-index: 1;
-      }
-
-      .sun {
-        position: absolute;
-        top: 40px;
-        right: 60px;
-        width: var(--sun-size);
-        height: var(--sun-size);
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          #fff8c8 0%,
-          #ffd86b 50%,
-          rgba(255, 216, 107, 0) 100%
-        );
-        filter: blur(2px);
-        animation: sunPulse 6s ease-in-out infinite;
-        transition: all 2.5s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-
-      /* Коли свято — сонце переміщується в центр і стає величезним */
-      body.celebrate .sun {
-        top: 50%;
-        left: 50%;
-        right: auto;
-        transform: translate(-50%, -50%);
-        width: 900px;
-        height: 900px;
-        background: radial-gradient(
-          circle,
-          #fffae0 0%,
-          #ffe082 30%,
-          #ffb347 60%,
-          rgba(255, 179, 71, 0) 100%
-        );
-        animation: sunPulseBig 4s ease-in-out infinite;
-      }
-
-      @keyframes sunPulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.95;
-        }
-        50% {
-          transform: scale(1.08);
-          opacity: 1;
-        }
-      }
-
-      @keyframes sunPulseBig {
-        0%,
-        100% {
-          transform: translate(-50%, -50%) scale(1);
-          opacity: 0.85;
-        }
-        50% {
-          transform: translate(-50%, -50%) scale(1.1);
-          opacity: 1;
-        }
-      }
-
-      .cloud {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.55);
-        border-radius: 100px;
-        filter: blur(8px);
-        animation: drift linear infinite;
-      }
-
-      @keyframes drift {
-        0% {
-          transform: translateX(-400px);
-        }
-        100% {
-          transform: translateX(5000px);
-        }
-      }
-
-      .petal {
-        position: absolute;
-        top: -60px;
-        animation: fall linear infinite;
-        will-change: transform;
-      }
-
-      @keyframes fall {
-        0% {
-          transform: translateY(-80px) translateX(0) rotate(0deg);
-          opacity: 0;
-        }
-        8% {
-          opacity: 0.9;
-        }
-        92% {
-          opacity: 0.9;
-        }
-        100% {
-          transform: translateY(3000px) translateX(250px) rotate(720deg);
-          opacity: 0;
-        }
-      }
-
-      .butterfly {
-        position: absolute;
-        animation: fly linear infinite;
-        will-change: transform;
-        transition: transform 0.6s ease;
-      }
-
-      @keyframes fly {
-        0% {
-          transform: translate(-120px, 0) rotate(-4deg);
-        }
-        25% {
-          transform: translate(1400px, -120px) rotate(6deg);
-        }
-        50% {
-          transform: translate(2800px, 60px) rotate(-4deg);
-        }
-        75% {
-          transform: translate(4200px, -90px) rotate(6deg);
-        }
-        100% {
-          transform: translate(5600px, 0) rotate(-4deg);
-        }
-      }
-
-      /* У режимі святкування метелики літають швидше */
-      body.celebrate .butterfly {
-        animation-duration: 14s !important;
-      }
-
-      .wing {
-        transform-origin: center;
-        animation: flap 0.32s ease-in-out infinite;
-      }
-
-      @keyframes flap {
-        0%,
-        100% {
-          transform: scaleX(1);
-        }
-        50% {
-          transform: scaleX(0.25);
-        }
-      }
-
-      /* ---------- Картка відліку ---------- */
-      .glass {
-        position: relative;
-        z-index: 10;
-        width: var(--card-w);
-        padding: var(--card-pad);
-        background: rgba(255, 255, 255, 0.32);
-        backdrop-filter: blur(32px) saturate(180%);
-        -webkit-backdrop-filter: blur(32px) saturate(180%);
-        border: 2px solid rgba(255, 255, 255, 0.7);
-        border-radius: var(--card-radius);
-        box-shadow:
-          0 30px 100px rgba(160, 80, 140, 0.18),
-          inset 0 1px 0 rgba(255, 255, 255, 0.85);
-        text-align: center;
-        transition:
-          opacity 1.2s ease,
-          transform 1.2s ease;
-      }
-
-      .glass.hide {
-        opacity: 0;
-        transform: scale(0.85);
-        pointer-events: none;
-      }
-
-      .tag {
-        display: inline-block;
-        font-family: "Manrope", sans-serif;
-        font-size: var(--tag-size);
-        font-weight: 600;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--text-accent);
-        background: rgba(255, 255, 255, 0.6);
-        padding: 0.6em 1.6em;
-        border-radius: 100px;
-        border: 1px solid rgba(255, 255, 255, 0.75);
-        margin-bottom: var(--mb-tag);
-      }
-
-      .title {
-        font-family: "Fraunces", "Times New Roman", serif;
-        font-variation-settings:
-          "opsz" 144,
-          "SOFT" 50;
-        font-size: var(--title-size);
-        font-weight: 500;
-        line-height: 1;
-        color: var(--text-dark);
-        margin-bottom: var(--mb-title);
-        letter-spacing: -0.02em;
-      }
-
-      .title em {
-        font-style: italic;
-        font-weight: 400;
-        color: var(--text-accent);
-      }
-
-      .subline {
-        font-family: "Fraunces", "Times New Roman", serif;
-        font-style: italic;
-        font-size: var(--subline-size);
-        color: var(--text-mid);
-        margin-bottom: var(--mb-sub);
-        font-weight: 400;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: var(--grid-gap);
-      }
-
-      .cell {
-        background: rgba(255, 255, 255, 0.5);
-        border: 2px solid rgba(255, 255, 255, 0.8);
-        border-radius: var(--cell-radius);
-        padding: var(--cell-pad);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        transition: transform 0.4s ease;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-      }
-
-      .num {
-        font-family: "Fraunces", "Times New Roman", serif;
-        font-variation-settings: "opsz" 144;
-        font-size: var(--num-size);
-        font-weight: 500;
-        line-height: 0.95;
-        color: var(--text-dark);
-        font-variant-numeric: tabular-nums;
-        letter-spacing: -0.04em;
-        margin-bottom: var(--mb-num);
-      }
-
-      .lbl {
-        font-family: "Manrope", sans-serif;
-        font-size: var(--lbl-size);
-        color: var(--text-mid);
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        font-weight: 600;
-      }
-
-      .pulse {
-        animation: pulse 0.6s ease;
-      }
-
-      @keyframes pulse {
-        0% {
-          transform: scale(1);
-        }
-        40% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      /* ---------- Фінальна сцена ---------- */
-      .finale {
-        position: fixed;
-        inset: 0;
-        z-index: 50;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 1.5s ease 0.8s;
-      }
-
-      .finale.show {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .finale-title {
-        font-family: "Fraunces", "Times New Roman", serif;
-        font-variation-settings: "opsz" 144;
-        font-size: var(--final-title);
-        font-weight: 500;
-        line-height: 0.95;
-        color: #3d1635;
-        letter-spacing: -0.02em;
-        text-shadow:
-          0 4px 30px rgba(255, 255, 255, 0.8),
-          0 0 60px rgba(255, 220, 120, 0.5);
-        animation: titleBounce 3s ease-in-out infinite;
-        transform: scale(0);
-        transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 1s;
-      }
-
-      .finale.show .finale-title {
-        transform: scale(1);
-      }
-
-      .finale-title em {
-        font-style: italic;
-        font-weight: 400;
-        color: #c2185b;
-        background: linear-gradient(135deg, #ff6ba0, #ffb347, #c2185b);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      @keyframes titleBounce {
-        0%,
-        100% {
-          transform: scale(1) translateY(0);
-        }
-        50% {
-          transform: scale(1.03) translateY(-10px);
-        }
-      }
-
-      .finale-sub {
-        font-family: "Fraunces", "Times New Roman", serif;
-        font-style: italic;
-        font-size: var(--final-sub);
-        color: #5a2f4e;
-        margin-top: 24px;
-        text-shadow: 0 2px 20px rgba(255, 255, 255, 0.9);
-        opacity: 0;
-        transition: opacity 1s ease 2s;
-      }
-
-      .finale.show .finale-sub {
-        opacity: 1;
-      }
-
-      /* ---------- Фейєрверк ---------- */
-      .firework {
-        position: fixed;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 40;
-      }
-
-      /* Канвас для динамічних частинок */
-      #fx {
-        position: fixed;
-        inset: 0;
-        z-index: 30;
-        pointer-events: none;
-      }
-    </style>
+    <title>Game Boiko School</title>
+    <link href="style.css" rel="stylesheet" />
   </head>
   <body>
-    <div class="bg-layer">
-      <div class="sun"></div>
-
-      <div
-        class="cloud"
-        style="
-          top: 100px;
-          width: 260px;
-          height: 40px;
-          animation-duration: 60s;
-          animation-delay: 0s;
-        "
-      ></div>
-      <div
-        class="cloud"
-        style="
-          top: 240px;
-          width: 180px;
-          height: 32px;
-          animation-duration: 80s;
-          animation-delay: -20s;
-        "
-      ></div>
-      <div
-        class="cloud"
-        style="
-          top: 80%;
-          width: 220px;
-          height: 40px;
-          animation-duration: 90s;
-          animation-delay: -40s;
-        "
-      ></div>
-
-      <div
-        class="petal"
-        style="left: 3%; animation-duration: 11s; animation-delay: 0s"
-      >
-        <svg width="24" height="24" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ff9ac7"
-            opacity=".85"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 8%; animation-duration: 14s; animation-delay: 2s"
-      >
-        <svg width="20" height="20" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#d8b4fe"
-            opacity=".8"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 13%; animation-duration: 12s; animation-delay: 4s"
-      >
-        <svg width="28" height="28" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ffc8dd"
-            opacity=".9"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 18%; animation-duration: 13s; animation-delay: 1s"
-      >
-        <svg width="16" height="16" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ffffff"
-            opacity=".7"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 24%; animation-duration: 15s; animation-delay: 3s"
-      >
-        <svg width="22" height="22" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ff9ac7"
-            opacity=".85"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 30%; animation-duration: 11.5s; animation-delay: 5s"
-      >
-        <svg width="20" height="20" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#c4b5fd"
-            opacity=".85"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 36%; animation-duration: 13.5s; animation-delay: 0.5s"
-      >
-        <svg width="24" height="24" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ffc8dd"
-            opacity=".9"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 42%; animation-duration: 12.5s; animation-delay: 2.5s"
-      >
-        <svg width="16" height="16" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ffffff"
-            opacity=".7"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 48%; animation-duration: 14.5s; animation-delay: 4.5s"
-      >
-        <svg width="20" height="20" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ff9ac7"
-            opacity=".85"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 54%; animation-duration: 11s; animation-delay: 1.5s"
-      >
-        <svg width="22" height="22" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#d8b4fe"
-            opacity=".8"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 60%; animation-duration: 13s; animation-delay: 3.5s"
-      >
-        <svg width="24" height="24" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ff9ac7"
-            opacity=".85"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 66%; animation-duration: 15s; animation-delay: 0s"
-      >
-        <svg width="16" height="16" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#c4b5fd"
-            opacity=".85"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 72%; animation-duration: 12s; animation-delay: 5s"
-      >
-        <svg width="28" height="28" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ffc8dd"
-            opacity=".9"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 78%; animation-duration: 13.5s; animation-delay: 2s"
-      >
-        <svg width="18" height="18" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ffffff"
-            opacity=".7"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 84%; animation-duration: 11.5s; animation-delay: 4s"
-      >
-        <svg width="22" height="22" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ff9ac7"
-            opacity=".85"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 90%; animation-duration: 14s; animation-delay: 1s"
-      >
-        <svg width="24" height="24" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#d8b4fe"
-            opacity=".8"
-          />
-        </svg>
-      </div>
-      <div
-        class="petal"
-        style="left: 96%; animation-duration: 12.5s; animation-delay: 3s"
-      >
-        <svg width="20" height="20" viewBox="0 0 14 14">
-          <path
-            d="M7 0 C10 3 10 6 7 13 C4 6 4 3 7 0Z"
-            fill="#ffc8dd"
-            opacity=".9"
-          />
-        </svg>
-      </div>
-
-      <div
-        class="butterfly"
-        style="top: 8%; animation-duration: 26s; animation-delay: 0s"
-      >
-        <svg width="90" height="64" viewBox="0 0 44 32">
-          <g class="wing">
-            <ellipse
-              cx="13"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#ff8fb8"
-              opacity=".9"
-            />
-            <ellipse
-              cx="13"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#ff6ba0"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#ff8fb8"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#ff6ba0"
-              opacity=".9"
-            />
-            <circle cx="9" cy="10" r="1.6" fill="#fff" opacity=".9" />
-            <circle cx="35" cy="10" r="1.6" fill="#fff" opacity=".9" />
-          </g>
-          <ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635" />
-        </svg>
-      </div>
-      <div
-        class="butterfly"
-        style="top: 28%; animation-duration: 34s; animation-delay: 10s"
-      >
-        <svg width="75" height="55" viewBox="0 0 44 32">
-          <g class="wing">
-            <ellipse
-              cx="13"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#c4b5fd"
-              opacity=".9"
-            />
-            <ellipse
-              cx="13"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#a78bfa"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#c4b5fd"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#a78bfa"
-              opacity=".9"
-            />
-          </g>
-          <ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635" />
-        </svg>
-      </div>
-      <div
-        class="butterfly"
-        style="top: 55%; animation-duration: 30s; animation-delay: 20s"
-      >
-        <svg width="82" height="62" viewBox="0 0 44 32">
-          <g class="wing">
-            <ellipse
-              cx="13"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#86e3b8"
-              opacity=".9"
-            />
-            <ellipse
-              cx="13"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#4ade80"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#86e3b8"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#4ade80"
-              opacity=".9"
-            />
-            <circle cx="9" cy="10" r="1.4" fill="#fff" opacity=".9" />
-            <circle cx="35" cy="10" r="1.4" fill="#fff" opacity=".9" />
-          </g>
-          <ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635" />
-        </svg>
-      </div>
-      <div
-        class="butterfly"
-        style="top: 78%; animation-duration: 32s; animation-delay: 5s"
-      >
-        <svg width="86" height="66" viewBox="0 0 44 32">
-          <g class="wing">
-            <ellipse
-              cx="13"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#fbbf24"
-              opacity=".9"
-            />
-            <ellipse
-              cx="13"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#f59e0b"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#fbbf24"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#f59e0b"
-              opacity=".9"
-            />
-            <circle cx="9" cy="10" r="1.4" fill="#fff" opacity=".9" />
-            <circle cx="35" cy="10" r="1.4" fill="#fff" opacity=".9" />
-          </g>
-          <ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635" />
-        </svg>
-      </div>
-      <div
-        class="butterfly"
-        style="top: 42%; animation-duration: 28s; animation-delay: 16s"
-      >
-        <svg width="72" height="52" viewBox="0 0 44 32">
-          <g class="wing">
-            <ellipse
-              cx="13"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#93c5fd"
-              opacity=".9"
-            />
-            <ellipse
-              cx="13"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#60a5fa"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="12"
-              rx="11"
-              ry="9"
-              fill="#93c5fd"
-              opacity=".9"
-            />
-            <ellipse
-              cx="31"
-              cy="22"
-              rx="8"
-              ry="7"
-              fill="#60a5fa"
-              opacity=".9"
-            />
-          </g>
-          <ellipse cx="22" cy="16" rx="1.6" ry="9" fill="#3d1635" />
-        </svg>
-      </div>
-    </div>
-
-    <canvas id="fx"></canvas>
-
-    <main class="glass" id="board">
-      <span class="tag">✿ Весна 2026 ✿</span>
-      <h1 class="title">До <em>канікул</em></h1>
-      <p class="subline" id="subline">Залишилося зовсім трохи…</p>
-
-      <div class="grid">
-        <div class="cell">
-          <div class="num" id="days">00</div>
-          <div class="lbl">Днів</div>
+    <main>
+      <div class="boxScore">
+        <div class="player">
+          <div class="box">
+            <span class="name" id="name--1">Griffin</span>
+            <img src="img/griffin.png" alt="grifin" class="img" />
+          </div>
         </div>
-        <div class="cell">
-          <div class="num" id="hours">00</div>
-          <div class="lbl">Годин</div>
+        <div class="vs-box">
+          <div class="score" id="griffin-score">0</div>
+          <img class="vs" src="img/vs.png" alt="" />
+          <div class="score" id="dragon-score">0</div>
         </div>
-        <div class="cell">
-          <div class="num" id="minutes">00</div>
-          <div class="lbl">Хвилин</div>
-        </div>
-        <div class="cell">
-          <div class="num" id="seconds">00</div>
-          <div class="lbl">Секунд</div>
+        <div class="player">
+          <div class="box">
+            <span class="name" id="name--2">Dragon</span>
+            <img src="img/dragon.png" alt="dragon" class="img" />
+          </div>
         </div>
       </div>
+
+      <div id="data-container"></div>
+      <section id="leaders" class="leaders" hidden>
+        <div class="wrapper-leaders">
+          <div class="split-bg">
+            <!-- Блок з гербами зверху -->
+
+            <!-- Центральний блок з таблицями -->
+            <main class="container">
+              <div class="board">
+                <div class="board__grid">
+                  <!-- Грифони -->
+                  <section class="side side--gryff">
+                    <header class="side__title">Грифони</header>
+                    <table class="rank">
+                      <thead>
+                        <tr>
+                          <th>Балів</th>
+                          <th>Учень/учениця</th>
+                          <th>Клас</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>100</td>
+                          <td>Кецман Таїсія</td>
+                          <td>7</td>
+                        </tr>
+                        <tr>
+                          <td>95</td>
+                          <td>Стусь Тарас</td>
+                          <td>6</td>
+                        </tr>
+                        <tr>
+                          <td>95</td>
+                          <td>Черфус Поліна</td>
+                          <td>7</td>
+                        </tr>
+                        <tr>
+                          <td>90</td>
+                          <td>Афанасова Софія</td>
+                          <td>6</td>
+                        </tr>
+                        <tr>
+                          <td>85</td>
+                          <td>Євель Мілана</td>
+                          <td>5</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </section>
+
+                  <!-- Дракони -->
+                  <section class="side side--dragons">
+                    <header class="side__title">Дракони</header>
+                    <table class="rank">
+                      <thead>
+                        <tr>
+                          <th>Балів</th>
+                          <th>Учень/учениця</th>
+                          <th>Клас</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>185</td>
+                          <td>Кібець Мілана</td>
+                          <td>3</td>
+                        </tr>
+                        <tr>
+                          <td>125</td>
+                          <td>Біскаль Луїза</td>
+                          <td>6</td>
+                        </tr>
+                        <tr>
+                          <td>115</td>
+                          <td>Правдюк Акім</td>
+                          <td>3</td>
+                        </tr>
+                        <tr>
+                          <td>105</td>
+                          <td>Толмачова Маша</td>
+                          <td>10</td>
+                        </tr>
+                        <tr>
+                          <td>105</td>
+                          <td>Гудкова Надя</td>
+                          <td>5</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
+              </div>
+            </main>
+
+            <!-- Низ сторінки -->
+            <footer class="footer-banner">
+              <h1><span class="footer-yellow">ЛІДЕРИ</span>1 СЕМЕСТРУ</h1>
+            </footer>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <div class="finale" id="finale">
-      <h1 class="finale-title">ЩАСЛИВИХ <em>КАНІКУЛ!</em></h1>
-      <p class="finale-sub">🌸 Відпочивай яскраво 🌸</p>
-    </div>
-
-    <script>
-      // ==========================================================
-      //  НАЛАШТУВАННЯ: змініть дату і час тут
-      // ==========================================================
-      var TARGET = new Date("2026-04-24T15:25:00").getTime();
-
-      // ==========================================================
-      //  Обчислення розмірів у пікселях на основі вікна
-      // ==========================================================
-      function applyPixelSizes() {
-        var w = window.innerWidth;
-        var h = window.innerHeight;
-        var r = document.documentElement.style;
-
-        var isMobile = w < 900;
-
-        if (isMobile) {
-          r.setProperty("--card-w", Math.round(w * 0.94) + "px");
-          r.setProperty(
-            "--card-pad",
-            Math.round(h * 0.04) + "px " + Math.round(w * 0.05) + "px",
-          );
-          r.setProperty("--card-radius", "24px");
-          r.setProperty("--title-size", Math.round(w * 0.14) + "px");
-          r.setProperty("--subline-size", Math.round(w * 0.04) + "px");
-          r.setProperty("--tag-size", "12px");
-          r.setProperty("--num-size", Math.round(w * 0.18) + "px");
-          r.setProperty("--lbl-size", Math.round(w * 0.028) + "px");
-          r.setProperty("--grid-gap", Math.round(w * 0.02) + "px");
-          r.setProperty(
-            "--cell-pad",
-            Math.round(h * 0.025) + "px " + Math.round(w * 0.01) + "px",
-          );
-          r.setProperty("--cell-radius", "18px");
-          r.setProperty("--sun-size", Math.round(w * 0.25) + "px");
-          r.setProperty("--mb-title", Math.round(h * 0.01) + "px");
-          r.setProperty("--mb-tag", Math.round(h * 0.015) + "px");
-          r.setProperty("--mb-sub", Math.round(h * 0.03) + "px");
-          r.setProperty("--mb-num", "6px");
-          r.setProperty("--final-title", Math.round(w * 0.12) + "px");
-          r.setProperty("--final-sub", Math.round(w * 0.05) + "px");
-        } else {
-          r.setProperty("--card-w", Math.round(w * 0.92) + "px");
-          r.setProperty(
-            "--card-pad",
-            Math.round(h * 0.06) + "px " + Math.round(w * 0.04) + "px",
-          );
-          r.setProperty("--card-radius", Math.round(w * 0.025) + "px");
-          r.setProperty("--title-size", Math.round(w * 0.09) + "px");
-          r.setProperty("--subline-size", Math.round(w * 0.02) + "px");
-          r.setProperty("--tag-size", Math.round(w * 0.013) + "px");
-          r.setProperty("--num-size", Math.round(w * 0.15) + "px");
-          r.setProperty("--lbl-size", Math.round(w * 0.014) + "px");
-          r.setProperty("--grid-gap", Math.round(w * 0.015) + "px");
-          r.setProperty(
-            "--cell-pad",
-            Math.round(h * 0.03) + "px " + Math.round(w * 0.01) + "px",
-          );
-          r.setProperty("--cell-radius", Math.round(w * 0.02) + "px");
-          r.setProperty(
-            "--sun-size",
-            Math.min(Math.round(w * 0.18), 400) + "px",
-          );
-          r.setProperty("--mb-title", Math.round(h * 0.015) + "px");
-          r.setProperty("--mb-tag", Math.round(h * 0.02) + "px");
-          r.setProperty("--mb-sub", Math.round(h * 0.05) + "px");
-          r.setProperty("--mb-num", Math.round(h * 0.01) + "px");
-          r.setProperty("--final-title", Math.round(w * 0.11) + "px");
-          r.setProperty("--final-sub", Math.round(w * 0.025) + "px");
-        }
-      }
-
-      applyPixelSizes();
-      window.addEventListener("resize", function () {
-        applyPixelSizes();
-        resizeCanvas();
-      });
-
-      // ==========================================================
-      //  Відлік часу
-      // ==========================================================
-      function byId(id) {
-        return document.getElementById(id);
-      }
-      function pad(n) {
-        return (n < 10 ? "0" : "") + n;
-      }
-
-      function setNum(id, val) {
-        var el = byId(id);
-        var s = pad(val);
-        if (el.textContent !== s) {
-          el.textContent = s;
-          var cell = el.parentNode;
-          cell.classList.remove("pulse");
-          void cell.offsetWidth;
-          cell.classList.add("pulse");
-        }
-      }
-
-      var celebrationStarted = false;
-
-      function tick() {
-        var now = Date.now();
-        var diff = TARGET - now;
-        if (diff < 0) diff = 0;
-
-        var d = Math.floor(diff / 86400000);
-        var h = Math.floor(diff / 3600000) % 24;
-        var m = Math.floor(diff / 60000) % 60;
-        var s = Math.floor(diff / 1000) % 60;
-
-        setNum("days", d);
-        setNum("hours", h);
-        setNum("minutes", m);
-        setNum("seconds", s);
-
-        var sub = byId("subline");
-        if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
-          if (!celebrationStarted) {
-            celebrationStarted = true;
-            startCelebration();
-          }
-        } else if (d < 1 && h < 1) {
-          sub.textContent = "Залишилися лічені хвилини! 🌷";
-        } else if (d < 1) {
-          sub.textContent = "Залишилися лічені години! 🌸";
-        } else if (d < 7) {
-          sub.textContent = "Фінальний тиждень 🌺";
-        }
-      }
-
-      tick();
-      setInterval(tick, 1000);
-
-      // ==========================================================
-      //  ФІНАЛЬНА СЦЕНА + ФЕЙЄРВЕРК
-      // ==========================================================
-      function startCelebration() {
-        // Прибираємо картку відліку
-        byId("board").classList.add("hide");
-        // Міняємо тло на літнє
-        document.body.classList.add("celebrate");
-        // Показуємо напис
-        setTimeout(function () {
-          byId("finale").classList.add("show");
-        }, 400);
-        // Запускаємо фейєрверк
-        startFireworks();
-      }
-
-      // ---------- Канвас для фейєрверків ----------
-      var canvas = byId("fx");
-      var ctx = canvas.getContext("2d");
-      var particles = [];
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      resizeCanvas();
-
-      function randRange(a, b) {
-        return a + Math.random() * (b - a);
-      }
-
-      var COLORS = [
-        "#ff6ba0",
-        "#ffb347",
-        "#fbbf24",
-        "#f472b6",
-        "#c084fc",
-        "#60a5fa",
-        "#4ade80",
-        "#fb7185",
-        "#fde68a",
-        "#fca5a5",
-        "#a78bfa",
-        "#fff",
-      ];
-
-      function launchFirework() {
-        var cx = randRange(canvas.width * 0.15, canvas.width * 0.85);
-        var cy = randRange(canvas.height * 0.15, canvas.height * 0.55);
-        var count = 40 + Math.floor(Math.random() * 30);
-        var baseColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-
-        for (var i = 0; i < count; i++) {
-          var angle = (Math.PI * 2 * i) / count + Math.random() * 0.3;
-          var speed = randRange(3, 8);
-          particles.push({
-            x: cx,
-            y: cy,
-            vx: Math.cos(angle) * speed,
-            vy: Math.sin(angle) * speed,
-            life: 1,
-            decay: randRange(0.008, 0.016),
-            color:
-              Math.random() < 0.3
-                ? COLORS[Math.floor(Math.random() * COLORS.length)]
-                : baseColor,
-            size: randRange(2, 5),
-          });
-        }
-      }
-
-      function animateFireworks() {
-        ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        for (var i = particles.length - 1; i >= 0; i--) {
-          var p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.08; // гравітація
-          p.vx *= 0.99;
-          p.vy *= 0.99;
-          p.life -= p.decay;
-
-          if (p.life <= 0) {
-            particles.splice(i, 1);
-            continue;
-          }
-
-          ctx.globalAlpha = p.life;
-          ctx.fillStyle = p.color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-
-          // світіння
-          ctx.globalAlpha = p.life * 0.3;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-
-        requestAnimationFrame(animateFireworks);
-      }
-
-      function startFireworks() {
-        animateFireworks();
-        // Перший залп — одразу 3 вибухи
-        launchFirework();
-        setTimeout(launchFirework, 200);
-        setTimeout(launchFirework, 500);
-        // Потім регулярно
-        setInterval(function () {
-          launchFirework();
-          if (Math.random() < 0.4) setTimeout(launchFirework, 250);
-        }, 800);
-      }
-
-      // Подвійний клік — повноекранний режим
-      document.body.addEventListener("dblclick", function () {
-        if (!document.fullscreenElement) {
-          if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-          }
-        } else {
-          if (document.exitFullscreen) document.exitFullscreen();
-        }
-      });
-
-      // ДЛЯ ТЕСТУВАННЯ: натисніть клавішу "T", щоб побачити фінальну сцену одразу
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "t" || e.key === "T" || e.key === "е" || e.key === "Е") {
-          if (!celebrationStarted) {
-            celebrationStarted = true;
-            startCelebration();
-          }
-        }
-      });
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
