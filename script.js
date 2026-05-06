@@ -1,19 +1,9 @@
 let currentSet = 1;
-// лічильник, скільки блоків уже показали підряд
-let blocksShown = 0;
-// прапорець: зараз показуємо leaders (на один цикл)
-let showingLeaders = false;
 
 async function fetchData() {
   try {
-    // якщо минулий цикл показував leaders — сховаємо й перейдемо до наступного блоку
-    if (showingLeaders) {
-      document.getElementById("leaders").hidden = true;
-      showingLeaders = false;
-    }
-
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbyxpTNHr-K4jJHmXJKSky3PqJrRx51UL2eR6L88cbfJAbCqP-XT5_Ir3TKzp0idEERL/exec"
+      "https://script.google.com/macros/s/AKfycbyxpTNHr-K4jJHmXJKSky3PqJrRx51UL2eR6L88cbfJAbCqP-XT5_Ir3TKzp0idEERL/exec",
     );
     if (!response.ok) throw new Error("Network response was not ok");
     const data = await response.json();
@@ -25,35 +15,24 @@ async function fetchData() {
     griffinScore.textContent = data[1][1];
     dragonScore.textContent = data[1][2];
 
-    // якщо вже показали два блоки — на цьому циклі показуємо leaders і все
-    if (blocksShown >= 2) {
-      container.innerHTML = ""; // очищаємо контент
-      document.getElementById("leaders").hidden = false; // показуємо секцію
-      showingLeaders = true; // позначаємо, що зараз фаза leaders
-      blocksShown = 0; // обнуляємо лічильник, далі знову 2 блоки
-      return; // нічого більше не рендеримо в цей цикл
-    }
-
     container.innerHTML = "";
+
     if (Array.isArray(data) && data.length > 1) {
       if (currentSet === 1) {
         for (let i = 3; i < 9; i++) {
           const row = data[i];
           if (!row || row.length < 5) continue;
-          const divContent = createContentRow(row);
-          container.appendChild(divContent);
+          container.appendChild(createContentRow(row));
         }
         currentSet = 2;
       } else {
         for (let i = 10; i < 21; i++) {
           const row = data[i];
           if (!row || row.length < 5) continue;
-          const divContent = createContentRow(row);
-          container.appendChild(divContent);
+          container.appendChild(createContentRow(row));
         }
         currentSet = 1;
       }
-      blocksShown += 1; // рахуємо показаний блок
     } else {
       container.innerText = "Немає доступних даних";
     }
